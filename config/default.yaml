@@ -1,0 +1,11 @@
+# Patterns match entire top-level paragraphs. Named groups drive normalization.
+span_patterns:
+  - '(?:Span\s+)?(?:Tower\s*|T\.?\s*)?(?P<start>\d+)\s*[-–—]\s*(?:Tower\s*|T\.?\s*)?(?P<end>\d+)'
+  - 'Span\s*(?:No\.?\s*)?(?P<id>\d+)'
+heading_only: false
+heading_styles: [Heading1, Heading2, Heading3]
+# Optional full-paragraph expressions that terminate the last span.
+closing_patterns: []
+include_preamble: false
+number_width: 3
+output_template: '{span_id}.docx'

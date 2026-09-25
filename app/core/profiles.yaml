@@ -1,0 +1,53 @@
+# Filename selects a profile; start_after restricts parsing to detail sections.
+- filename: 'Clearance Danger Detection Report'
+  config:
+    include_preamble: true
+    personalize_preamble: true
+    profile: clearance
+    start_after: '\d+\.\s*Detail Kegentingan'
+    table_column: 1
+    merge_consecutive: true
+    span_patterns: ['(?P<start>\d+)\s*-\s*(?P<end>\d+)']
+- filename: 'PowerLine Sag Analysis'
+  config:
+    include_preamble: true
+    personalize_preamble: true
+    profile: sag
+    start_after: 'Lendutan Kawat\s+Details'
+    merge_consecutive: true
+    span_patterns: ['Tabel\s+\d+\.\s*Lendutan\s+(?P<start>\d+)-(?P<end>\d+)\s*Fasa.*']
+- filename: 'Tower Inclination'
+  config:
+    include_preamble: true
+    personalize_preamble: true
+    profile: tower_inclination
+    entity_kind: tower
+    start_after: 'Detail Kemiringan Menara'
+    span_patterns: ['Tabel\s+\d+\.\s*Kemiringan\s+Menara\s+(?P<id>\d+)']
+- filename: 'Report of Phase Spacing'
+  config:
+    include_preamble: true
+    personalize_preamble: true
+    profile: phase_spacing
+    start_after: '\d+\.\s*Fasa\s+Spacing Details'
+    table_column: 1
+    merge_consecutive: true
+    span_patterns: ['(?P<start>\d+)-(?P<end>\d+)\(\d+_\d+\)']
+- filename: 'Report of Sections'
+  config:
+    include_preamble: true
+    personalize_preamble: true
+    profile: sections
+    start_after: '\d+\s*Span\s+Details'
+    table_column: 1
+    span_patterns: ['(?P<start>\d+)-(?P<end>\d+)']
+- filename: 'Tower Nominal Height'
+  config:
+    include_preamble: true
+    personalize_preamble: true
+    profile: tower_height
+    entity_kind: tower
+    # Both the summary and detail title use this text. Caption matching below
+    # excludes the summary table even when the first title activates detection.
+    start_after: 'Daftar Tinggi Nominal'
+    span_patterns: ['Tabel\s+\d+\.\s*Tinggi Nominal\s+(?P<id>\d+)']

@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lipowerline-report-splitter"
+version = "0.1.0"
+description = "Local OpenXML span report splitter"
+requires-python = ">=3.12"
+dependencies = ["lxml>=5", "PyYAML>=6"]
+
+[project.optional-dependencies]
+test = ["pytest>=8", "python-docx>=1.1"]
+
+[project.scripts]
+span-splitter = "app.main:main"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.package-data]
+"app.core" = ["profiles.yaml"]
