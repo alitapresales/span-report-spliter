@@ -12,7 +12,7 @@ source .venv/bin/activate
 python -m pip install -e '.[test]'
 ```
 
-Windows PowerShell: aktivasi dengan `.venv\Scripts\Activate.ps1`.
+Untuk Windows PowerShell, ikuti panduan tanpa aktivasi di bawah.
 
 ## Cara menjalankan contoh report1 (Ubuntu)
 
@@ -40,6 +40,43 @@ xdg-open output/report1-complete
 Setiap jenis laporan memiliki folder sendiri. Hasil menyertakan cover/pembuka yang tersedia di sumber dan rekap yang disesuaikan per span atau menara. Tower Inclination dan Tower Nominal Height tetap menghasilkan satu file per menara.
 
 `--resume` melewati output yang sudah valid dengan status `SKIPPED` dan memproses output yang belum ada. File sumber tidak diubah. Jika source atau konfigurasi berubah sejak pemrosesan sebelumnya, gunakan folder output baru.
+
+## Windows PowerShell tanpa aktivasi
+
+Buka PowerShell di folder proyek. Cara ini langsung menggunakan Python di `.venv`, sehingga tidak perlu menjalankan `Activate.ps1` atau mengubah execution policy ketika muncul error `running scripts is disabled on this system`.
+
+**Setup pertama kali** (Python 3.12+ dengan perintah `py` tersedia):
+
+```powershell
+py -m venv .venv
+& .\.venv\Scripts\python.exe -m pip install -e ".[test]"
+```
+
+Jika `.venv` Windows dan dependensinya sudah tersedia, lewati setup. Virtual environment dari Ubuntu tidak bisa dipakai langsung di Windows; buat `.venv` baru di Windows.
+
+**Cek deteksi tanpa membuat output:**
+
+```powershell
+Get-ChildItem -Path "doc-source/report1/*.docx" -File | ForEach-Object {
+    & .\.venv\Scripts\python.exe splitter.py --input $_.FullName --analyze
+}
+```
+
+**Proses semua dokumen:**
+
+```powershell
+Get-ChildItem -Path "doc-source/report1/*.docx" -File | ForEach-Object {
+    & .\.venv\Scripts\python.exe splitter.py --input $_.FullName --output "output/report1-complete/$($_.BaseName)" --resume
+}
+```
+
+`--resume` melewati hasil yang sudah valid dengan status `SKIPPED` dan memproses output yang belum ada. Jika source atau konfigurasi berubah, gunakan folder output baru.
+
+**Buka folder hasil:**
+
+```powershell
+explorer .\output\report1-complete
+```
 
 ## Penggunaan
 
